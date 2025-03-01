@@ -14,6 +14,7 @@ const bookReduser = (state = initialState, action) => {
                     ? { ...book, isFavorite: !book.isFavorite }
                     : book
             );
+
         default:
             return state;
     }
