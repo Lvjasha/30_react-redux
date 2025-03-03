@@ -16,7 +16,8 @@ export const fetchBook = createAsyncThunk(
       return res.data;
     } catch (error) {
       thunkAPI.dispatch(setError(error.message));
-      throw error;
+      return thunkAPI.rejectWithValue(error);
+      //throw error;
     }
   }
 );
@@ -75,6 +76,7 @@ const booksSlice = createSlice({
         state.isLoadingViaAPI = true;
       })
       .addCase(fetchBook.fulfilled, (state, action) => {
+        state.isLoadingViaAPI = false;
         if (action.payload.title && action.payload.author) {
           state.books.push(createBookWithID(action.payload, 'API'));
         }
@@ -87,4 +89,5 @@ const booksSlice = createSlice({
 
 export const { addBook, deleteBook, toggleFavorite } = booksSlice.actions;
 export const selectBooks = (state) => state.books.books;
+export const selectIsLoadingViaAPI = (state) => state.books.isLoadingViaAPI;
 export default booksSlice.reducer;
